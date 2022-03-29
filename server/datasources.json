@@ -1,0 +1,16 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "SdMongoDb": {
+    "host": "copmldmngana-a.servizi.prv",
+    "port": 27017,
+    "url": "mongodb://linee_aeree_at_user:fgh8p63d679NAr@copmldmngana-a.servizi.prv:27017,cornldmngana-b.servizi.prv:27017,cogbldmngana-c.servizi.prv:27017/linee_aeree_at?authSource=linee_aeree_at&replicaSet=TO-ANALYTICS-COLLAUDO",
+    "database": "linee_aeree_at",
+    "password": "fgh8p63d679NAr",
+    "name": "SdMongoDb",
+    "user": "linee_aeree_at_user",
+    "connector": "mongodb"
+  }
+}

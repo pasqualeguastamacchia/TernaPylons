@@ -1,0 +1,14 @@
+{
+  "name": "Mappatura_Meteo_Campate",
+  "plural": "Mappatura_Meteo_Campate",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

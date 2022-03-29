@@ -1,0 +1,31 @@
+{
+  "name": "Sisnet_Geometrie_Sostegni",
+  "plural": "Sisnet_Geometrie_Sostegni",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "ID_ELEMENTO": {
+      "type": "number",
+      "required": true
+    },
+    "COORD_X": {
+      "type": "number",
+      "required": true
+    },
+    "COORD_Y": {
+      "type": "number",
+      "required": true
+    },
+    "COORD_Z": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
