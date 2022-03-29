@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "../node_modules/ol/ol.css";
+body {
+    font-family: 'Roboto';
+    color: var(--text-color);
+    margin: 0;
+    --header-color: #D1DFB7;
+    --sidebar-color: #FAE6BE;
+    --text-color: black;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

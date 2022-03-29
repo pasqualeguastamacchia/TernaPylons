@@ -1,0 +1,111 @@
+<div style="overflow: hidden;">
+  <header>
+    <div class="menu">
+      <button mat-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>Manicotto di ghiaccio</button>
+        <button mat-menu-item>Health Index</button>
+      </mat-menu>
+      <img src="assets\img\logo.svg" width="130px">
+    </div>
+  </header>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-8" id="map">
+        <div style="position:relative">
+          <div id="ol-map" class="map-container"></div>
+          <div class="row" *ngIf="panelShow">
+            <div class="col-8" id="chart-container">
+              <div>
+                <mat-icon (click)="hidePanel()">close</mat-icon>
+              </div>
+              <div class="chart-wrapper" id="chart-component">
+                <app-chart [data]="temperatureChartValues"[data2]="precipitazioniChartValues"></app-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div style="height:80vh; overflow:auto;">
+          <form>
+            <div class="form-group">
+              <label for="exampleInputEmail1"></label>
+              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Cerca per codice campata">
+            </div>
+          </form>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>CODICE CAMPATA</th>
+                <th>RISCHIO</th>
+                <th>LIVELLO DI TENSIONE</th>
+                <th>LUNGHEZZA CAMPATA</th>
+                <th>AZIONI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let point of filteredPoints" [class.bg-warning]="point.risk[0]?.predicted >= 0.5 && point.risk[0]?.predicted <0.8" 
+                [class.bg-danger]="point.risk[0]?.predicted >= 0.8" >
+              <!-- [style.backgroundColor]="basedOnRiskColorToApply(point.risk[0]?.predicted || 0)"> -->
+                <td>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-activity"
+                    viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                      d="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2Z" />
+                  </svg>
+                  {{point.codice_campata}}
+                </td>
+                <td>
+                  <mat-icon width="16" height="16">warning</mat-icon>
+                  {{point.risk[0]?.predicted.toFixed(3) || '-'}}
+                </td>
+                <td>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-lightning-charge-fill" viewBox="0 0 16 16">
+                    <path
+                      d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z" />
+                  </svg>{{point.livello_di_tensione}}
+                </td>
+                <td>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-text-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                      d="M6 12.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-4-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm4-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-4-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" />
+                  </svg>{{point.lunghezza_campata}}
+                </td>
+                <td>
+                  <button href="#" class="btn btn-secondary rounded-circle float-end" (click)="moveMapView(point)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-pin-map-fill" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd"
+                        d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8l3-4z" />
+                      <path fill-rule="evenodd" d="M4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z" />
+                    </svg>
+                  </button>
+                  <button href="#" class="btn btn-secondary rounded-circle float-end" (click)="showPanel(point.codice_campata)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart" viewBox="0 0 16 16">
+                      <path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5v12h-2V2h2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3z"/>
+                    </svg>
+                  </button>
+                </td>
+              </tr>          
+            </tbody>
+          </table>
+        </div> 
+        <ul class="pagination" *ngIf="filteredPoints.length">
+          <li class="page-item" (click)="goToPage(currentPage -1)" [class.disable]="currentPage === 1">
+            <a class="page-link"> Precedente</a></li>
+          <li class="page-item" [class.active]="page===currentPage" *ngFor="let page of filteredNumPage" (click)="goToPage(page)">
+            <a class="page-link"> {{page}}</a>
+          </li>
+          <li class="page-item" [class.disable]="currentPage === filteredPoints.length" (click)="goToPage(currentPage +1)"><a class="page-link"> Successivo</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <footer>
+  </footer>
+</div>
